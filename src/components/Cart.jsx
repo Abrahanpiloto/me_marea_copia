@@ -77,10 +77,10 @@ const Cart = () => {
   };
 
   return (
-    <div className="px-4 py-6 max-w-6xl mx-auto bg-white mt-22 flex flex-col lg:flex-row gap-2">
+    <div className=" py-6 max-w-6xl mx-auto bg-white mt-22 flex flex-col lg:flex-row gap-2">
       {/* ------ Box Info ----- */}
       <div className=" lg:w-3/4">
-        <div className="bg-[#ebeef5] p-4">
+        <div className="bg-[#cbd2ef] p-4 rounded-lg">
           <div className="mb-6 flex flex-col justify-center items-center">
             <h1 className="text-2xl font-bold">Carrito 🛒</h1>
             <p>Lo que has elegido:</p>
@@ -89,19 +89,19 @@ const Cart = () => {
           {items.length === 0 ? (
             <p>Todavia no hay productos en el carrito</p>
           ) : (
-            <div className="lg:px-4 ">
+            <div className="lg:px-4">
               {items.map((item) => (
                 <div
                   key={item.id}
-                  className="rounded flex flex-col lg:flex-row gap-3 mb-5 border border-amber-500 "
+                  className="rounded flex lg:flex-row gap-3 mb-5 h-35 lg:h-55"
                 >
                   <img
                     src={item.image_url}
                     alt={item.name}
-                    className="w-20 h-28 object-cover rounded lg:w-40 lg:h-55"
+                    className="w-20 h-35 object-cover rounded lg:w-40 lg:h-55"
                   />
-                  <div className="flex">
-                    <div className="lg:mt-18 border border-amber-500">
+                  <div className="flex items-end">
+                    <div className="w-30 flex-col">
                       <h3 className="font-bold">{item.name}</h3>
                       <p className="font-light text-sm">Talla: {item.size}</p>
                       <p className="font-light text-sm">Color: {item.color}</p>
@@ -127,9 +127,9 @@ const Cart = () => {
                         </div>
                       </div>
                     </div>
-                    <div className="flex items-center gap-8 justify-between align-baseline">
-                      <p className="text-green-600 font-bold w-36 mt-2">
-                        Precio: S/. {(item.price * item.quantity).toFixed(2)}
+                    <div className="flex items-end h-12 w-26">
+                      <p className="text-gray-700 font-bold w-36 mt-2">
+                        S/. {(item.price * item.quantity).toFixed(2)}
                       </p>
                       <button
                         onClick={() => handleDeleteItem(item.id)}
@@ -148,17 +148,17 @@ const Cart = () => {
       </div>
 
       {/* ----- Box Subtotal ----- */}
-      <div className="lg:w-1/2 lg:mt-22">
+      <div className="lg:w-1/2 flex lg:min-h-screen lg:items-center ">
         <div className="flex flex-col justify-center items-center mt-6 p-4 bg-white rounded shadow-lg w-full lg:w-md border border-amber-500">
           <h1 className="text-2xl font-bold mb-2">Subtotal</h1>
-          <p className="text-xl font-semibold text-green-600 mb-4">
+          <p className="text-xl font-semibold text-gray-600 mb-4">
             S/. {subtotal.toFixed(2)}
           </p>
 
           {/* Text despliegue del input */}
           <p
             onClick={() => setShowCouponInput(!showCouponInput)}
-            className="text-md text-blue-600 underline cursor-pointer hover:text-blue-800 mb-3"
+            className="text-sm text-blue-500 underline cursor-pointer hover:text-blue-800 mb-3"
           >
             Insertar cupón de descuento
           </p>
@@ -187,7 +187,7 @@ const Cart = () => {
 
           <Link
             to="/storepage"
-            className="text-center text-md text-blue-600 underline cursor-pointer hover:text-blue-800"
+            className="text-center text-sm text-blue-500 underline cursor-pointer hover:text-blue-800"
           >
             Seguir comprando
           </Link>

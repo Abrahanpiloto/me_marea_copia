@@ -4,15 +4,40 @@ import { supabase } from "../../supabase/supabaseClient";
 const AddProduct = () => {
   const mainImageRef = useRef(null);
   const miniImagesRef = useRef(null);
+
   // estado local para guardar los datos del formulario:
   const [formData, setFormData] = useState({
     name: "",
     description: "",
     price: "",
     sizes: [],
+    colors: [],
     mainImage: null,
     miniImages: [],
   });
+
+  const AVAILABLE_COLORS = [
+    "Negro",
+    "Blanco",
+    "Rojo",
+    "Azul",
+    "Azul marino",
+    "Verde",
+    "Amarillo",
+    "Gris",
+    "Rosa",
+    "Fucsia",
+    "Melón",
+    "Celeste",
+    "Beige",
+    "Café",
+    "Morado",
+    "Lila",
+    "Naranja",
+    "Turquesa",
+    "Oro",
+    "Plata",
+  ];
 
   // función que se dispara cuando se cambia un input (texto o archivo):
   const handleChange = (e) => {
@@ -109,7 +134,8 @@ const AddProduct = () => {
         name: formData.name,
         description: formData.description,
         price: parseFloat(formData.price),
-        sizes: formData.sizes.join(","),
+        sizes: formData.sizes,
+        colors: formData.colors,
         image_url: mainImageUrl,
         image_urls: miniImageUrls,
       },
@@ -128,8 +154,9 @@ const AddProduct = () => {
       description: "",
       price: "",
       sizes: "",
+      colors: [],
       mainImage: null,
-      miniImage: [],
+      miniImages: [],
     });
     if (mainImageRef.current) {
       mainImageRef.current.value = "";
@@ -168,14 +195,7 @@ const AddProduct = () => {
             required
             className="w-full p-2 border rounded"
           />
-          {/* <input
-            name="sizes"
-            type="text"
-            placeholder="Tallas (ej: s, m, l)"
-            value={formData.sizes}
-            onChange={handleChange}
-            className="w-full p-2 border rounded"
-          /> */}
+
           {/* ----- TALLAS (tipo checkbox) ------ */}
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-2">
@@ -203,6 +223,38 @@ const AddProduct = () => {
                     }`}
                   >
                     {size}
+                  </button>
+                );
+              })}
+            </div>
+          </div>
+          {/* ----- COLORES (tipo botón) ------ */}
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-2">
+              Seleccionar colores disponibles (opcional)
+            </label>
+            <div className="flex flex-wrap gap-2">
+              {AVAILABLE_COLORS.map((color) => {
+                const isSelected = formData.colors.includes(color);
+                return (
+                  <button
+                    type="button"
+                    key={color}
+                    onClick={() => {
+                      setFormData((prev) => ({
+                        ...prev,
+                        colors: isSelected
+                          ? prev.colors.filter((c) => c !== color) // quitar color
+                          : [...prev.colors, color], // agregar color
+                      }));
+                    }}
+                    className={`px-3 py-1 text-sm rounded-full border transition ${
+                      isSelected
+                        ? "bg-orange-500 text-white border-orange-500"
+                        : "bg-white text-gray-700 border-gray-300 hover:bg-gray-100"
+                    }`}
+                  >
+                    {color}
                   </button>
                 );
               })}

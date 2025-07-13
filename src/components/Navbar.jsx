@@ -1,19 +1,29 @@
 import React, { useState, useRef, useEffect } from "react";
-import { FaInstagram, FaTiktok, FaFacebookF } from "react-icons/fa";
+// import { useLocation } from "react-router-dom";
+import {
+  FaInstagram,
+  FaTiktok,
+  FaFacebookF,
+  FaShoppingCart,
+} from "react-icons/fa";
 import useClickOutside from "../hooks/useClickOutside";
 import FlyOutLink from "./FlyOutLink";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
+import { supabase } from "../../supabase/supabaseClient";
+import { getGuestId } from "../utils/guestId";
+import fetchCartCount from "../utils/fetchCartCount";
 
 const Navbar = () => {
   const [menuOpen, setMenuOpen] = useState(false);
   const [showSubMenu, setShowSubMenu] = useState(false);
   const [showSubMenuDesktop, setShowSubMenuDesktop] = useState(false);
   const [showSubMenuMobile, setShowSubMenuMobile] = useState(false);
+  const [cartCount, setCartCount] = useState(0);
 
   const toggleMenu = () => {
     setMenuOpen(!menuOpen);
   };
-
+  const location = useLocation();
   const menuRef = useRef();
 
   const subMenuDesktopRef = useRef();
@@ -24,6 +34,50 @@ const Navbar = () => {
   useClickOutside(subMenuDesktopRef, () => setShowSubMenuDesktop(false));
   useClickOutside(subMenuMobileRef, () => setShowSubMenuMobile(false));
 
+  useEffect(() => {
+    const loadCartCount = async () => {
+      const total = await fetchCartCount();
+
+      setCartCount(total);
+    };
+    loadCartCount();
+
+    const guestId = getGuestId();
+
+    // Suscribirse a cambios en tiempo real:
+    const channel = supabase
+      .channel("realtime-cart")
+      .on(
+        "postgres_changes",
+        {
+          event: "*",
+          schema: "public",
+          table: "cart_items",
+          filter: `guest_id=eq.${guestId}`,
+        },
+        () => {
+          //Cada vez que algo cambia volvemos a contar:
+          loadCartCount();
+        }
+      )
+      .subscribe();
+
+    // Limppieza al desmontar:
+    return () => supabase.removeChannel(channel);
+  }, []);
+
+  // listener global para que el contador se actualice cuando se borre un items desde el carrito:
+  useEffect(() => {
+    const handleCartCountUpdate = (e) => {
+      setCartCount(e.detail);
+    };
+    window.addEventListener("cartCountUpdated", handleCartCountUpdate);
+    return () => {
+      window.removeEventListener("cartCountUpdated", handleCartCountUpdate);
+    };
+  }, []);
+
+  // Para el menu desplegable:
   useEffect(() => {
     if (menuOpen) {
       document.body.style.overflow = "hidden"; //desactiva el scroll de body si el menu lateral esta abierto
@@ -65,13 +119,28 @@ const Navbar = () => {
         <div className="relative" ref={subMenuDesktopRef}>
           <FlyOutLink />
         </div>
-        <Link to="/about" className="hover:text-blue-900 transition">
+        <Link to="/aboutpage" className="hover:text-blue-900 transition">
           Quiénes somos
         </Link>
         <a href="#" className="hover:text-blue-900 transition">
           Contacto
         </a>
       </nav>
+
+      {/* ---- Icono de carrito 🛒 */}
+      {location.pathname !== "/cartpage" && (
+        <Link
+          to="/cartpage"
+          className="relative text-white hover:text-emerald-300 transition"
+        >
+          <FaShoppingCart className="text-2xl mr-3.5" />
+          {cartCount > 0 && (
+            <span className="absolute -top-2 -right-0 bg-red-600 text-white text-xs font-bold px-2 py-1 rounded-full">
+              {cartCount}
+            </span>
+          )}
+        </Link>
+      )}
 
       {/* Input de búsqueda para pantallas grandes */}
       <div className="hidden lg:block relative w-64">
@@ -103,9 +172,9 @@ const Navbar = () => {
           <nav className="flex flex-col gap-4 text-white font-bold text-base mb-4">
             {/* ... (resto del menú lateral) */}
             <div>
-              <a href="#" className="hover:text-blue-900 transition">
+              <Link to="/storepage" className="hover:text-blue-900 transition">
                 Tienda
-              </a>
+              </Link>
               <button
                 className="text-sm focus:outline-none ml-2 cursor-pointer lg:hidden"
                 onClick={(e) => {

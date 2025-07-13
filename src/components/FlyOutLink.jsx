@@ -75,7 +75,7 @@ const categoryStore = () => {
       </div>
 
       <Link
-        to="/store"
+        to="/storepage"
         className="w-full rounded-lg border-1 border-neutral-950 px-4 py-2 font-semibold transition-colors hover:bg-[#e2a555] hover:text-white"
       >
         Ir a la tienda

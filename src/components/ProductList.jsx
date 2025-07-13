@@ -101,6 +101,7 @@ const ProductList = () => {
           </select>
         </div>
       </div>
+
       {/* --------------------- Card -------------- */}
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-2 ">
         {products.map((product) => (
@@ -117,15 +118,12 @@ const ProductList = () => {
             </div>
             <h3 className="text-lg font-semibold">{product.name}</h3>
             <p className="text-sm text-gray-600">{product.description}</p>
-            <p className="mt-2 font-bold text-orange-700">
+            <p className="mt-2 mb-2 font-bold text-emerald-600">
               S/. {product.price}
-            </p>
-            <p className="text-xs text-gray-500 mt-1 mb-2">
-              Tallas: {product.sizes}
             </p>
 
             <button
-              onClick={() => navigate(`/productdetails/${product.id}`)}
+              onClick={() => navigate(`/productdetailspage/${product.id}`)}
               className="mt-auto bg-[#E2A555] text-black py-2 px-4 w-full rounded flex items-center justify-center gap-2 hover:bg-emerald-200 transition cursor-pointer"
             >
               Mas detalles
@@ -139,7 +137,7 @@ const ProductList = () => {
         <button
           onClick={() => setCurrentPage((prev) => Math.max(prev - 1, 1))}
           disabled={currentPage === 1}
-          className="px-4 py-2 bg-gray-200 rounded hover:bg-gray-300 disabled:opacity-50"
+          className="px-2 py-2 bg-gray-200 rounded hover:bg-emerald-400 disabled:opacity-50 cursor-pointer"
         >
           Anterior
         </button>

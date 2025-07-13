@@ -20,7 +20,7 @@ const Welcome = () => {
             Ropa y accesorios para tus viajes y aventuras por el Perú y el 🌎
           </p>
           <Link
-            to="/store"
+            to="/storepage"
             className="inline-block bg-white hover:bg-[#e2a555] text-black font-normal py-3 px-6 rounded-lg transition"
           >
             Compra ahora

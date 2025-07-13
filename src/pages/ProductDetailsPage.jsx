@@ -4,7 +4,7 @@ import CardDetails from "../components/CardDetails";
 import { useParams } from "react-router-dom";
 import { supabase } from "../../supabase/supabaseClient";
 
-const ProductDetails = () => {
+const ProductDetailsPage = () => {
   const { id } = useParams();
   const [product, setproducts] = useState(null);
 
@@ -26,8 +26,8 @@ const ProductDetails = () => {
 
   if (!product) {
     return (
-      <div>
-        <h3>Cargando, porfavor espere...</h3>
+      <div className="flex items-center justify-center min-h-screen">
+        <h1>Cargando, porfavor espere...</h1>
       </div>
     );
   }
@@ -41,4 +41,4 @@ const ProductDetails = () => {
   );
 };
 
-export default ProductDetails;
+export default ProductDetailsPage;

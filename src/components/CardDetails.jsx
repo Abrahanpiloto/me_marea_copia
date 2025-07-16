@@ -1,6 +1,9 @@
 import React, { useState } from "react";
 import { addToCart } from "../services/cartServices";
 import fetchCartCount from "../utils/fetchCartCount";
+import { Link } from "react-router-dom";
+// import { IoReturnUpBack } from "react-icons/io5";
+import { TbArrowBackUp } from "react-icons/tb";
 
 const CardDetail = ({ product }) => {
   const [mainImage, setMainImage] = useState(product.image_url);
@@ -70,12 +73,18 @@ const CardDetail = ({ product }) => {
           )}
         </div>
       </div>
-      {/* Info */}
-      <div className="bg-[#ebeef5] rounded-md py-1 lg:w-1/2">
-        <div className="flex flex-col items-starts mt-2 px-4">
-          <h2 className="text-xl font-bold">{product.name}</h2>
+      {/* ----- Info ----- */}
+      <div className="bg-[#ebeef5] rounded-md py-1 lg:w-1/2 px-6">
+        <div className="flex justify-between items-baseline lg:px-4">
+          <div className="flex flex-col items-starts mt-2 ">
+            <h2 className="text-xl font-bold">{product.name}</h2>
+            <p className="font-bold text-green-800 mb-2">S/. {product.price}</p>
+          </div>
+          <div className="flex items-baseline text-blue-500 text-sm hover:text-blue-900  ">
+            <Link to="/storepage">Regresar</Link>
 
-          <p className="font-bold text-green-800 mb-2">S/. {product.price}</p>
+            <TbArrowBackUp />
+          </div>
         </div>
 
         {/* Tallas */}

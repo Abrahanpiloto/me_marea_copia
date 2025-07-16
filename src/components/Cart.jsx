@@ -14,10 +14,12 @@ const Cart = () => {
     (acc, item) => acc + item.price * item.quantity,
     0
   );
+  const totalQuantity = items.reduce((acc, item) => acc + item.quantity, 0);
 
   useEffect(() => {
     const fetchCart_items = async () => {
       const guestId = getGuestId();
+      console.log("guestId:", guestId);
       const { data, error } = await supabase
         .from("cart_items")
         .select("*")
@@ -77,80 +79,81 @@ const Cart = () => {
   };
 
   return (
-    <div className=" py-6 max-w-6xl mx-auto bg-white mt-22 flex flex-col lg:flex-row gap-2">
+    <div className="lg:px-2 px-4 py-6 max-w-6xl mx-auto bg-white mt-22 flex flex-col lg:flex-row gap-2">
       {/* ------ Box Info ----- */}
-      <div className=" lg:w-3/4">
-        <div className="bg-[#dde2f5] p-4 rounded-lg">
-          <div className="mb-6 flex flex-col justify-center items-center">
-            <h1 className="text-2xl font-bold">Carrito 🛒</h1>
-            <p>Lo que has elegido:</p>
-          </div>
+      <div className=" lg:w-3/4 bg-[#dde2f5] px-2 py-2 rounded-lg">
+        <div className="mb-6 flex flex-col justify-center items-center">
+          <h1 className="text-xl font-bold">
+            {" "}
+            {totalQuantity} articulos en tu carrito 🛒
+          </h1>
+          <p>Lo que has elegido:</p>
+        </div>
 
-          {items.length === 0 ? (
-            <p>Todavia no hay productos en el carrito</p>
-          ) : (
-            <div className="lg:px-4">
-              {items.map((item) => (
-                <div
-                  key={item.id}
-                  className="rounded flex lg:flex-row gap-3 mb-5 h-35 lg:h-55"
-                >
-                  <img
-                    src={item.image_url}
-                    alt={item.name}
-                    className="w-20 h-35 object-cover rounded lg:w-40 lg:h-55"
-                  />
-                  <div className="flex items-end">
-                    <div className="w-30 flex-col">
-                      <h3 className="font-bold">{item.name}</h3>
-                      <p className="font-light text-sm">Talla: {item.size}</p>
-                      <p className="font-light text-sm">Color: {item.color}</p>
-                      <p className="font-light text-sm">Cantidad</p>
+        {items.length === 0 ? (
+          <p className="flex justify-center text-gray-500">
+            Todavia no hay productos en el carrito
+          </p>
+        ) : (
+          <div className="lg:px-4">
+            {items.map((item) => (
+              <div
+                key={item.id}
+                className="w-full rounded flex lg:flex-row gap-3 mb-5 items-end"
+              >
+                <img
+                  src={item.image_url}
+                  alt={item.name}
+                  className="w-20 h-35 object-cover rounded lg:w-40 lg:h-55"
+                />
+                <div className="flex-col">
+                  <div className="w-40 lg:w-70 flex-col p-2">
+                    <h3 className="font-bold">{item.name}</h3>
+                    <p className="font-light text-sm">Talla: {item.size}</p>
+                    <p className="font-light text-sm">Color: {item.color}</p>
 
-                      {/* Selector de cantidad */}
-                      <div className="lg:flex-row gap-22">
-                        <div>
-                          {" "}
-                          <button
-                            onClick={() => handleDecrease(item.id)}
-                            className="px-2 border rounded mr-2 font-bold cursor-pointer"
-                          >
-                            -
-                          </button>
-                          <span className="text-md">{item.quantity}</span>
-                          <button
-                            onClick={() => handleIncrease(item.id)}
-                            className="px-2 border rounded ml-2 font-bold cursor-pointer"
-                          >
-                            +
-                          </button>
-                        </div>
+                    {/* Selector de cantidad */}
+                    <div className="flex flex-row items-baseline gap-2">
+                      <div className="flex  w-26">
+                        <button
+                          onClick={() => handleDecrease(item.id)}
+                          className="px-2 border rounded mr-2 font-bold cursor-pointer"
+                        >
+                          -
+                        </button>
+                        <span className="text-md">{item.quantity}</span>
+                        <button
+                          onClick={() => handleIncrease(item.id)}
+                          className="px-2 border rounded ml-2 font-bold cursor-pointer"
+                        >
+                          +
+                        </button>
                       </div>
-                    </div>
-                    <div className="flex items-end h-12 w-26">
-                      <p className="text-gray-700 font-bold w-36 mt-2">
-                        S/. {(item.price * item.quantity).toFixed(2)}
-                      </p>
-                      <button
-                        onClick={() => handleDeleteItem(item.id)}
-                        className=" p-1 text-gray-700 hover:text-red-500 cursor-pointer"
-                        title="Eliminar"
-                      >
-                        <FaRegTrashCan />
-                      </button>
+                      <div className="flex lg:flex-row items-end w-26 ">
+                        <p className="text-gray-700 font-bold flex-shrink-0 mt-2">
+                          S/. {(item.price * item.quantity).toFixed(2)}
+                        </p>
+                        <button
+                          onClick={() => handleDeleteItem(item.id)}
+                          className=" p-1 text-gray-700 hover:text-red-500 cursor-pointer"
+                          title="Eliminar"
+                        >
+                          <FaRegTrashCan />
+                        </button>
+                      </div>
                     </div>
                   </div>
                 </div>
-              ))}
-            </div>
-          )}
-        </div>
+              </div>
+            ))}
+          </div>
+        )}
       </div>
 
-      {/* ----- Box Subtotal ----- */}
-      <div className="lg:w-1/2 flex lg:min-h-screen lg:items-center ">
-        <div className="flex flex-col justify-center items-center mt-6 p-4 bg-white rounded shadow-lg w-full lg:w-md border border-amber-500">
-          <h1 className="text-2xl font-bold mb-2">Subtotal</h1>
+      {/* ----- Box Izquierdo Subtotal ----- */}
+      <div className="lg:w-1/2 flex lg:items-center ">
+        <div className="flex flex-col justify-center items-center mt-6 p-4 bg-white rounded-lg shadow-lg w-full lg:w-md border border-gray-200">
+          <h1 className="text-xl font-bold mb-2">Subtotal</h1>
           <p className="text-xl font-semibold text-gray-600 mb-4">
             S/. {subtotal.toFixed(2)}
           </p>
@@ -186,7 +189,7 @@ const Cart = () => {
               pathname: "/checkoutpage",
               state: { items, subtotal },
             }}
-            className="cursor-pointer lg:w-3/4 w-full bg-[#E2A555] text-black py-3 rounded font-semibold hover:bg-emerald-300 transition mb-3 "
+            className="cursor-pointer lg:w-3/4 w-full bg-[#E2A555] text-black py-3 rounded font-semibold hover:bg-emerald-300 transition mb-3 flex justify-center "
           >
             Continuar con el pago →
           </Link>

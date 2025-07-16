@@ -80,7 +80,7 @@ const Cart = () => {
     <div className=" py-6 max-w-6xl mx-auto bg-white mt-22 flex flex-col lg:flex-row gap-2">
       {/* ------ Box Info ----- */}
       <div className=" lg:w-3/4">
-        <div className="bg-[#cbd2ef] p-4 rounded-lg">
+        <div className="bg-[#dde2f5] p-4 rounded-lg">
           <div className="mb-6 flex flex-col justify-center items-center">
             <h1 className="text-2xl font-bold">Carrito 🛒</h1>
             <p>Lo que has elegido:</p>
@@ -181,9 +181,15 @@ const Cart = () => {
               </button>
             </div>
           )}
-          <button className="cursor-pointer lg:w-3/4 w-full bg-[#E2A555] text-black py-3 rounded font-semibold hover:bg-emerald-300 transition mb-3 ">
+          <Link
+            to={{
+              pathname: "/checkoutpage",
+              state: { items, subtotal },
+            }}
+            className="cursor-pointer lg:w-3/4 w-full bg-[#E2A555] text-black py-3 rounded font-semibold hover:bg-emerald-300 transition mb-3 "
+          >
             Continuar con el pago →
-          </button>
+          </Link>
 
           <Link
             to="/storepage"

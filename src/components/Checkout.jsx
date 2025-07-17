@@ -3,6 +3,7 @@ import { supabase } from "../../supabase/supabaseClient";
 import { getGuestId } from "../utils/guestId";
 import { Link } from "react-router-dom";
 import { FaRegTrashCan } from "react-icons/fa6";
+import fetchCartCount from "../utils/fetchCartCount";
 
 const Checkout = () => {
   const [items, setItems] = useState([]);
@@ -37,6 +38,26 @@ const Checkout = () => {
     };
     fetchCart_items();
   }, []);
+
+  const handleDeleteItem = async (itemId) => {
+    const { error } = await supabase
+      .from("cart_items")
+      .delete()
+      .eq("id", itemId);
+
+    if (!error) {
+      // Actualiza la vista localmente:
+      setItems((prevItems) => prevItems.filter((item) => item.id !== itemId));
+
+      // Actualiza el contador del icono carrito en el Navbar:
+      const count = await fetchCartCount();
+      window.dispatchEvent(
+        new CustomEvent("cartCountUpdated", { detail: count })
+      );
+    } else {
+      console.error("Error al eliminar el item:", error);
+    }
+  };
 
   return (
     <div className="max-w-6xl mx-auto px-4 py-4 mt-20">

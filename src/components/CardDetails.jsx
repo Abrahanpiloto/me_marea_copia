@@ -80,9 +80,8 @@ const CardDetail = ({ product }) => {
             <h2 className="text-xl font-bold">{product.name}</h2>
             <p className="font-bold text-green-800 mb-2">S/. {product.price}</p>
           </div>
-          <div className="flex items-baseline text-blue-500 text-sm hover:text-blue-900  ">
+          <div className="flex items-end text-blue-500 text-sm hover:text-blue-900  ">
             <Link to="/storepage">Regresar</Link>
-
             <TbArrowBackUp />
           </div>
         </div>

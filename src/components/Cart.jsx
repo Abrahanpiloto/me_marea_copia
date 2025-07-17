@@ -39,23 +39,43 @@ const Cart = () => {
   }, []);
 
   // 🔼 INCREMENTAR cantidad
-  const handleIncrease = (itemId) => {
-    setItems((prev) =>
-      prev.map((item) =>
-        item.id === itemId ? { ...item, quantity: item.quantity + 1 } : item
-      )
-    );
+  const handleIncrease = async (itemId) => {
+    const item = items.find((i) => i.id === itemId);
+    const newQuantity = item.quantity + 1;
+
+    // Actualiza en Supabase:
+    const { error } = await supabase
+      .from("cart_items")
+      .update({ quantity: newQuantity })
+      .eq("id", itemId);
+
+    if (!error) {
+      // Actualiza en el estado local para que se refleje en pantalla:
+      setItems((prev) =>
+        prev.map((i) => (i.id === itemId ? { ...i, quantity: newQuantity } : i))
+      );
+    } else {
+      console.error("Error al actualizar cantidad:", error);
+    }
   };
 
   // 🔽 DISMINUIR cantidad
-  const handleDecrease = (itemId) => {
-    setItems((prev) =>
-      prev.map((item) =>
-        item.id === itemId
-          ? { ...item, quantity: Math.max(1, item.quantity - 1) }
-          : item
-      )
-    );
+  const handleDecrease = async (itemId) => {
+    const item = items.find((i) => i.id === itemId);
+    const newQuantity = Math.max(1, item.quantity - 1);
+
+    const { error } = await supabase
+      .from("cart_items")
+      .update({ quantity: newQuantity })
+      .eq("id", itemId);
+
+    if (!error) {
+      setItems((prev) =>
+        prev.map((i) => (i.id === itemId ? { ...i, quantity: newQuantity } : i))
+      );
+    } else {
+      console.error("Error al actualizar cantidad:", error);
+    }
   };
 
   const handleDeleteItem = async (itemId) => {
@@ -108,7 +128,7 @@ const Cart = () => {
                 />
                 <div className="flex-col">
                   <div className="w-40 lg:w-70 flex-col p-2">
-                    <h3 className="font-bold">{item.name}</h3>
+                    <h3 className="">{item.name}</h3>
                     <p className="font-light text-sm">Talla: {item.size}</p>
                     <p className="font-light text-sm">Color: {item.color}</p>
 
@@ -153,7 +173,7 @@ const Cart = () => {
       {/* ----- Box Izquierdo Subtotal ----- */}
       <div className="lg:w-1/2 flex lg:items-center ">
         <div className="flex flex-col justify-center items-center mt-6 p-4 bg-white rounded-lg shadow-lg w-full lg:w-md border border-gray-200">
-          <h1 className="text-xl font-bold mb-2">Subtotal</h1>
+          <h1 className="text-xl mb-2">Subtotal:</h1>
           <p className="text-xl font-semibold text-gray-600 mb-4">
             S/. {subtotal.toFixed(2)}
           </p>
@@ -189,7 +209,7 @@ const Cart = () => {
               pathname: "/checkoutpage",
               state: { items, subtotal },
             }}
-            className="cursor-pointer lg:w-3/4 w-full bg-[#E2A555] text-black py-3 rounded font-semibold hover:bg-emerald-300 transition mb-3 flex justify-center "
+            className="cursor-pointer lg:w-3/4 w-full bg-[#E2A555] text-black py-3 rounded hover:bg-emerald-300 transition mb-3 flex justify-center "
           >
             Continuar con el pago →
           </Link>

@@ -3,7 +3,7 @@ import React from "react";
 const History = () => {
   return (
     <>
-      <div className="min-h-screen flex flex-col lg:flex-row items-center justify-center px-4 max-w-6xl mx-auto gap-12 ">
+      <div className="py-9 min-h-screen flex flex-col lg:flex-row items-center justify-center px-4 max-w-6xl mx-auto gap-12 ">
         {/* Imagen */}
         <div className="w-full flex justify-center mb-6 lg:mb-0 lg:w-2/5">
           <img
@@ -15,11 +15,11 @@ const History = () => {
 
         {/* Texto */}
         <div className="w-full px-4 lg:w-3/5">
-          <h1 className="text-3xl font-bold text-center mb-4 mt-8 text-white">
+          <h1 className="text-3xl font-bold text-center mb-4 lg:mt-8 text-black">
             Hola <span>👋</span>
           </h1>
-          <div className="space-y-4 [&>p]:indent-8 [&>p]:text-justify [&>p]:leading-relaxed [&>p]:text-base [&>p]:text-white ">
-            <p className="text-base mb-4 text-justify leading-relaxed indent-6 lg:max-w-none  ">
+          <div className="space-y-4 [&>p]:indent-8 [&>p]:text-justify [&>p]:leading-relaxed [&>p]:text-base [&>p]:text-black ">
+            <p className=" mb-4 text-justify leading-relaxed indent-6 lg:max-w-none text-black">
               Valenciana es una tienda online con esencia peruana, fundada en
               Lima, Perú en el año 2020. Aunque operamos exclusivamente por
               internet, llevamos con orgullo nuestras raíces locales. Ofrecemos

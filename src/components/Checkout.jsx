@@ -1,8 +1,45 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
+import { supabase } from "../../supabase/supabaseClient";
+import { getGuestId } from "../utils/guestId";
+import { Link } from "react-router-dom";
+import { FaRegTrashCan } from "react-icons/fa6";
 
 const Checkout = () => {
+  const [items, setItems] = useState([]);
+  const [loading, setLoading] = useState(true);
+
+  const subtotal = items.reduce(
+    (acc, item) => acc + item.price * item.quantity,
+    0
+  );
+  const shipping = 10;
+  const total = subtotal + shipping;
+
+  useEffect(() => {
+    const fetchCart_items = async () => {
+      const guestId = getGuestId();
+
+      const { data, error } = await supabase
+        .from("cart_items")
+        .select("*")
+        .eq("guest_id", guestId);
+
+      if (!error) {
+        const withQuantity = data.map((item) => ({
+          ...item,
+          quantity: item.quantity || 1,
+        }));
+        setItems(withQuantity);
+      } else {
+        console.error("Error al traer el carrito:", error);
+      }
+      setLoading(false);
+    };
+    fetchCart_items();
+  }, []);
+
   return (
-    <div className="max-w-6xl mx-auto px-4 py-12 mt-20">
+    <div className="max-w-6xl mx-auto px-4 py-4 mt-20">
       <div className="flex flex-col lg:flex-row gap-10">
         {/* --------------------- LADO IZQUIERDO --------------------- */}
         <div className="w-full lg:w-2/3 bg-[#dde2f5] p-6 rounded shadow-sm">
@@ -83,58 +120,93 @@ const Checkout = () => {
                   ¿Quieres crear una cuenta para futuras compras?
                 </span>
               </label>
+              <label className="flex items-center gap-2">
+                <input type="checkbox" />
+                <span className="text-sm">
+                  ¿Quieres retirarlo en la tienda o que lo enviemos a tu
+                  dirección?
+                </span>
+              </label>
             </div>
 
             <button
               type="submit"
-              className="w-full bg-orange-600 hover:bg-orange-700 text-white py-3 rounded mt-4"
+              className="w-full bg-[#E2A555] hover:bg-emerald-300 text-black py-3 rounded mt-4 cursor-pointer"
             >
               Continuar →
             </button>
           </form>
         </div>
 
-        {/* --------------------- LADO DERECHO --------------------- */}
-        <div className="w-full lg:w-1/3">
+        {/* --------------------- RESUMEN --------------------- */}
+
+        <div className="w-full lg:w-1/3 mt-14">
           <div className="bg-white shadow-md p-5 rounded relative lg:-mt-14">
-            <h2 className="text-md font-semibold mb-4">Resumen del pedido</h2>
+            <h2 className="text-md text-gray-600 font-semibold mb-4">
+              Resumen de la compra
+            </h2>
 
-            <div className="flex items-start gap-4 mb-4">
-              <img
-                src="https://via.placeholder.com/60x80"
-                alt="producto"
-                className="w-16 h-20 object-cover rounded"
-              />
-              <div>
-                <p className="text-sm font-semibold">
-                  Set organizador de 4 pisos negro
-                </p>
-                <div className="flex items-center gap-2 mt-2">
-                  <button className="border px-2">-</button>
-                  <span>1</span>
-                  <button className="border px-2">+</button>
+            {loading ? (
+              <p>Cargando...</p>
+            ) : items.length === 0 ? (
+              <p className="text-gray-500 text-sm">Tu carrito está vacío</p>
+            ) : (
+              <>
+                {items.map((item) => (
+                  <div key={item.id} className="flex items-end gap-4 mb-4">
+                    <img
+                      src={item.image_url}
+                      alt={item.name}
+                      className="w-18 h-24 object-cover rounded"
+                    />
+                    <div className="flex-1">
+                      <p className="text-sm">{item.name}</p>
+                      <p className="text-xs text-gray-500">
+                        Talla: {item.size} • Color: {item.color}
+                      </p>
+                      <p className="text-xs text-gray-500">
+                        Cantidad: {item.quantity}
+                      </p>
+                      <Link
+                        className="inline-block mt-1 text-xs text-blue-500 hover:text-blue-700"
+                        to={`/productdetailspage/${item.product_id}`}
+                      >
+                        Cambiar
+                      </Link>
+                      <button
+                        onClick={() => handleDeleteItem(item.id)}
+                        className="ml-4 p-1 text-gray-700 hover:text-red-500 cursor-pointer text-sm"
+                        title="Eliminar"
+                      >
+                        <FaRegTrashCan />
+                      </button>
+                    </div>
+
+                    <div className="ml-auto text-sm font-semibold">
+                      S/. {(item.price * item.quantity).toFixed(2)}
+                    </div>
+                  </div>
+                ))}
+
+                <div className="text-sm space-y-2 border-t pt-3">
+                  <div className="flex justify-between">
+                    <span>Subtotal:</span>
+                    <span>S/. {subtotal.toFixed(2)}</span>
+                  </div>
+                  <div className="flex justify-between">
+                    <span>Envío:</span>
+                    <span>S/. {shipping.toFixed(2)}</span>
+                  </div>
+                  <p className="text-blue-500 underline text-xs cursor-pointer">
+                    Insertar código promocional
+                  </p>
+                  <div className="flex justify-between font-bold text-lg pt-3">
+                    <span>Total:</span>
+                    <span>S/. {total.toFixed(2)}</span>
+                  </div>
                 </div>
-              </div>
-              <div className="ml-auto text-sm font-semibold">S/.119.00</div>
-            </div>
-
-            <div className="text-sm space-y-2 border-t pt-3">
-              <div className="flex justify-between">
-                <span>Subtotal:</span>
-                <span>S/.119.00</span>
-              </div>
-              <div className="flex justify-between">
-                <span>Envío:</span>
-                <span>S/.10.00</span>
-              </div>
-              <p className="text-orange-600 underline text-xs cursor-pointer">
-                Insertar código promocional
-              </p>
-              <div className="flex justify-between font-bold text-lg pt-3">
-                <span>Total:</span>
-                <span>S/.129.00</span>
-              </div>
-            </div>
+              </>
+            )}
           </div>
         </div>
       </div>

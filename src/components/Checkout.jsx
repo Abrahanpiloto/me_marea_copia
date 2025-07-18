@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { supabase } from "../../supabase/supabaseClient";
 import { getGuestId } from "../utils/guestId";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { FaRegTrashCan } from "react-icons/fa6";
 import fetchCartCount from "../utils/fetchCartCount";
 
@@ -15,6 +15,7 @@ const Checkout = () => {
   );
   const shipping = 10;
   const total = subtotal + shipping;
+  const navigate = useNavigate();
 
   useEffect(() => {
     const fetchCart_items = async () => {
@@ -188,12 +189,16 @@ const Checkout = () => {
                       <p className="text-xs text-gray-500">
                         Cantidad: {item.quantity}
                       </p>
-                      <Link
-                        className="inline-block mt-1 text-xs text-blue-500 hover:text-blue-700"
-                        to={`/productdetailspage/${item.product_id}`}
+                      <button
+                        className="inline-block mt-1 text-xs text-blue-500 hover:text-blue-700 cursor-pointer"
+                        onClick={() =>
+                          navigate(`/productdetailspage/${item.product_id}`, {
+                            state: { quantity: item.quantity },
+                          })
+                        }
                       >
                         Cambiar
-                      </Link>
+                      </button>
                       <button
                         onClick={() => handleDeleteItem(item.id)}
                         className="ml-4 p-1 text-gray-700 hover:text-red-500 cursor-pointer text-sm"

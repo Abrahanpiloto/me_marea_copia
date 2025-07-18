@@ -1,16 +1,19 @@
 import React, { useState } from "react";
 import { addToCart } from "../services/cartServices";
 import fetchCartCount from "../utils/fetchCartCount";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 // import { IoReturnUpBack } from "react-icons/io5";
 import { TbArrowBackUp } from "react-icons/tb";
 
 const CardDetail = ({ product }) => {
   const [mainImage, setMainImage] = useState(product.image_url);
-  const [quantity, setQuantity] = useState(1);
   const [selectedSize, setSelectedSize] = useState(product.sizes?.[0] || "");
   const [selectedColor, setSelectedColor] = useState(product.colors?.[0] || "");
   const [addedToCart, setAddedToCart] = useState(false);
+
+  const location = useLocation();
+  const initialQuantity = location.state?.quantity || 1;
+  const [quantity, setQuantity] = useState(initialQuantity);
 
   const handleAddToCart = async () => {
     const item = {

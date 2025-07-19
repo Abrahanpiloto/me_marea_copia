@@ -62,29 +62,29 @@ const ProductList = () => {
   }, [currentPage, sortOption]);
 
   return (
-    // --------- Titulos y Select --------------
-    <div className="p-4 max-w-7xl mx-auto mt-22 bg-white">
-      <div className="bg-[#F5F6FA] px-8 py-4 rounded-lg mb-4 flex flex-col lg:flex-row lg:justify-between">
+    <div className="p-4 max-w-7xl mx-auto mt-18 bg-white">
+      {/* --------- Titulos y Select -------------- */}
+      <div className="bg-[#F5F6FA] px-4 py-4 rounded-lg mb-4 flex flex-col lg:flex-row lg:justify-between">
         <div>
           {" "}
-          <h2 className="text-2xl font-bold">Todos los productos</h2>
-          <p className="text-gray-400 text-sm mb-4">
+          <h2 className="text-2xl">Todos los productos</h2>
+          <p className="text-gray-600 text-sm mb-4">
             Mostrando {currentPage} - {totalPages} de un total de{" "}
             {totalProducts} resultados
           </p>
         </div>
-        <div className="flex items-center gap-2">
-          <label htmlFor="sort" className="text-sm font-medium text-gray-400">
+        <div className="flex items-center gap-2 ">
+          <label htmlFor="sort" className="text-sm font-medium text-gray-600">
             Ordenar por:
           </label>
           <select
             id="sort"
             name="sort"
             onChange={handleSortChange}
-            className="border border-gray-300 rounded px-3 py-1 text-sm text-gray-400"
+            className="border border-gray-300 rounded px-3 py-1 text-sm text-gray-700 bg-white"
           >
-            <option className="text-sm text-gray-500" value="recent">
-              Más reciente primero
+            <option className="text-sm text-gray-700" value="recent">
+              Más recientes primero
             </option>
             <option className="text-sm text-gray-500" value="az">
               Orden A - Z
@@ -101,13 +101,12 @@ const ProductList = () => {
           </select>
         </div>
       </div>
-
       {/* --------------------- Card -------------- */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-2 ">
+      <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-2 ">
         {products.map((product) => (
           <div
             key={product.id}
-            className=" p-4 shadow hover:shadow-lg transition mx-auto max-w-[300px] bg-white border border-gray-200 rounded-lg flex flex-col h-full"
+            className=" p-2 shadow hover:shadow-lg transition mx-auto max-w-[300px] bg-white border border-gray-200 rounded-lg flex flex-col h-full"
           >
             <div className="aspect-[4/5] w-full mb-2 rounded overflow-hidden">
               <img
@@ -117,7 +116,7 @@ const ProductList = () => {
               />
             </div>
             <h3 className="text-lg font-semibold">{product.name}</h3>
-            <p className="text-sm text-gray-600">{product.description}</p>
+            {/* <p className="text-sm text-gray-600">{product.description}</p> */}
             <p className="mt-2 mb-2 font-bold text-emerald-600">
               S/. {product.price}
             </p>
@@ -131,7 +130,6 @@ const ProductList = () => {
           </div>
         ))}
       </div>
-
       {/* Paginación */}
       <div className="flex justify-center mt-6 gap-4">
         <button

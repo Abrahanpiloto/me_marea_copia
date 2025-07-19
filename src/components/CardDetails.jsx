@@ -4,15 +4,21 @@ import fetchCartCount from "../utils/fetchCartCount";
 import { Link, useLocation } from "react-router-dom";
 // import { IoReturnUpBack } from "react-icons/io5";
 import { TbArrowBackUp } from "react-icons/tb";
+import { supabase } from "../../supabase/supabaseClient";
 
 const CardDetail = ({ product }) => {
-  const [mainImage, setMainImage] = useState(product.image_url);
-  const [selectedSize, setSelectedSize] = useState(product.sizes?.[0] || "");
-  const [selectedColor, setSelectedColor] = useState(product.colors?.[0] || "");
-  const [addedToCart, setAddedToCart] = useState(false);
-
   const location = useLocation();
+  const fromCheckout = location.state?.fromCheckout || false;
+  const cartItemId = location.state?.cartItemId || null;
+
   const initialQuantity = location.state?.quantity || 1;
+
+  const initialSize = location.state?.size || product.sizes?.[0] || "";
+  const initialColor = location.state?.color || product.colors?.[0] || "";
+  const [mainImage, setMainImage] = useState(product.image_url);
+  const [selectedSize, setSelectedSize] = useState(initialSize);
+  const [selectedColor, setSelectedColor] = useState(initialColor);
+  const [addedToCart, setAddedToCart] = useState(false);
   const [quantity, setQuantity] = useState(initialQuantity);
 
   const handleAddToCart = async () => {
@@ -47,6 +53,26 @@ const CardDetail = ({ product }) => {
     }
   };
 
+  const handleUpdateItem = async () => {
+    if (!cartItemId) return;
+    try {
+      const { error } = await supabase
+        .from("cart_items")
+        .update({
+          quantity,
+          size: selectedSize,
+          color: selectedColor,
+        })
+        .eq("id", cartItemId);
+    } catch (error) {
+      console.error("Error al actualizar el producto:", error);
+      alert("Error al actualizar el producto");
+      return;
+    }
+    // Redirigir al checkout:
+    window.location.href = "/checkoutpage";
+  };
+
   return (
     <div className="p-4 max-w-6xl mx-auto bg-white mt-22 flex flex-col lg:flex-row gap-2">
       <div className="lg:w-1/2">
@@ -77,20 +103,23 @@ const CardDetail = ({ product }) => {
         </div>
       </div>
       {/* ----- Info ----- */}
-      <div className="bg-[#ebeef5] rounded-md py-1 lg:w-1/2 px-6">
-        <div className="flex justify-between items-baseline lg:px-4">
+      <div className="bg-[#ebeef5] rounded-md py-1 lg:w-1/2 px-4">
+        <div className="flex justify-between items-baseline ">
           <div className="flex flex-col items-starts mt-2 ">
             <h2 className="text-xl font-bold">{product.name}</h2>
             <p className="font-bold text-green-800 mb-2">S/. {product.price}</p>
           </div>
-          <div className="flex items-end text-blue-500 text-sm hover:text-blue-900  ">
+          <div
+            className="flex items-baseline
+          text-blue-500 text-sm hover:text-blue-900  "
+          >
             <Link to="/storepage">Regresar</Link>
             <TbArrowBackUp />
           </div>
         </div>
 
         {/* Tallas */}
-        <div className="mb-2 px-4">
+        <div className="mb-2 ">
           <span className="text-sm">Tallas:</span>
           <div className="mt-2 flex flex-wrap gap-2">
             {product.sizes.map((size) => {
@@ -115,7 +144,7 @@ const CardDetail = ({ product }) => {
         </div>
 
         {/* ---- Colores ---- */}
-        <div className="mb-4 px-4">
+        <div className="mb-4">
           <span className=" text-sm">Colores:</span>
           <div className="mt-2 flex flex-wrap gap-2">
             {product.colors?.map((color) => {
@@ -138,7 +167,7 @@ const CardDetail = ({ product }) => {
         </div>
 
         {/* ----- Selector de cantidad ----- */}
-        <div className="flex items-center gap-4 mt-4 mb-4 px-4">
+        <div className="flex items-center gap-4 mt-4 mb-4 ">
           <button
             onClick={() => setQuantity((q) => Math.max(1, q - 1))}
             className="px-3.5 py-1 border rounded cursor-pointer hover:bg-white"
@@ -153,17 +182,26 @@ const CardDetail = ({ product }) => {
             +
           </button>
 
-          {/* ---- Botón agregar al carrito ----- */}
-          <button
-            onClick={handleAddToCart}
-            className="w-full bg-[#E2A555] text-black py-2 rounded font-ligth text-lg hover:bg-emerald-400 transition cursor-pointer"
-          >
-            {addedToCart ? "Agregado ✅" : "Agregar al carrito"}
-          </button>
+          {/* ---- Botón agregar al carrito  o actualizar----- */}
+          {fromCheckout ? (
+            <button
+              onClick={handleUpdateItem}
+              className="w-full bg-[#E2A555] text-black py-2 rounded font-ligth text-lg hover:bg-emerald-400 transition cursor-pointer"
+            >
+              Actualizar
+            </button>
+          ) : (
+            <button
+              onClick={handleAddToCart}
+              className="w-full bg-[#E2A555] text-black py-2 rounded font-ligth text-lg hover:bg-emerald-400 transition cursor-pointer"
+            >
+              {addedToCart ? "Agregado ✅" : "Agregar al carrito"}
+            </button>
+          )}
         </div>
 
         {/* ---- Descripcion del producto ---- */}
-        <div className="px-4">
+        <div className="">
           <p className="text-gray-600 mb-2">{product.description}</p>
         </div>
       </div>

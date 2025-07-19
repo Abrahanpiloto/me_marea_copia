@@ -193,7 +193,13 @@ const Checkout = () => {
                         className="inline-block mt-1 text-xs text-blue-500 hover:text-blue-700 cursor-pointer"
                         onClick={() =>
                           navigate(`/productdetailspage/${item.product_id}`, {
-                            state: { quantity: item.quantity },
+                            state: {
+                              quantity: item.quantity,
+                              fromCheckout: true,
+                              cartItemId: item.id,
+                              size: item.size,
+                              color: item.color,
+                            },
                           })
                         }
                       >

@@ -70,12 +70,22 @@ const AddCategories = () => {
     setLoading(false);
   };
 
+  // Muestra la imagen que se desea subir a Supabase
   const handlePreview = (e) => {
     const file = e.target.files[0];
     if (file) {
       setImageFile(file);
       const preview = URL.createObjectURL(file); //crea una url temporal
       setPreviewImageUrl(preview);
+    }
+  };
+
+  // Elimina la imagen ANTES de subirla a Supabase
+  const handleDeletePreview = () => {
+    setImageFile(null);
+    setPreviewImageUrl(null);
+    if (inputImageRef.current) {
+      inputImageRef.current.value = ""; //Limpia el input de imagen visualmente
     }
   };
 
@@ -109,11 +119,20 @@ const AddCategories = () => {
           {previewImageUrl && (
             <div className="mt-2">
               <p className="text-sm text-gray-600 mb-1">Vista previa:</p>
-              <img
-                src={previewImageUrl}
-                alt="Vista previa"
-                className="w-32 h-32 object-cover rounded border"
-              />
+              <div className="relative inline-block w-32 h-32">
+                <img
+                  src={previewImageUrl}
+                  alt="Vista previa"
+                  className="w-32 h-32 object-cover rounded border"
+                />
+                <button
+                  type="button"
+                  onClick={handleDeletePreview}
+                  className="absolute top-0 right-0 bg-red-600 text-white rounded-full w-5 h-5 text-xs flex items-center justify-center font-extrabold translate-x-1/2 -translate-y-1/2"
+                >
+                  X
+                </button>
+              </div>
             </div>
           )}
 

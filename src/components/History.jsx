@@ -3,7 +3,7 @@ import React from "react";
 const History = () => {
   return (
     <>
-      <div className="py-9 min-h-screen flex flex-col lg:flex-row items-center justify-center px-4 max-w-6xl mx-auto gap-12 ">
+      <div className="min-h-screen flex flex-col lg:flex-row items-center justify-center px-4 py-12 mx-auto gap-12 bg-[#CADBDB] ">
         {/* Imagen */}
         <div className="w-full flex justify-center mb-6 lg:mb-0 lg:w-2/5">
           <img

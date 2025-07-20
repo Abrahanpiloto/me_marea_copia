@@ -3,8 +3,8 @@ import { Link } from "react-router-dom";
 
 const Welcome = () => {
   return (
-    <div className="min-h-screen flex items-center justify-center px-4 bg-[#5683A0] pt-0 mt-8 lg:pt-0">
-      <div className="max-w-6xl w-full flex flex-col-reverse lg:flex-row items-center gap-12">
+    <div className="min-h-screen flex items-center justify-center px-4 py-18 bg-[#5683A0]">
+      <div className="max-w-6xl w-full flex flex-col-reverse lg:flex-row items-center gap-12 mt-10">
         {/* Texto a la izquierda */}
         <div className="w-full lg:w-1/2 text-center lg:text-left">
           <h1 className="mb-4 text-white">
@@ -21,9 +21,9 @@ const Welcome = () => {
           </p>
           <Link
             to="/storepage"
-            className="inline-block bg-white hover:bg-[#e2a555] text-black font-normal py-3 px-6 rounded-lg transition"
+            className="bg-[#e2a555] hover:bg-white text-black font-bold py-3 px-4 rounded-md transition shadow-2xl"
           >
-            Compra ahora
+            Comprar ahora
           </Link>
         </div>
 
@@ -32,7 +32,7 @@ const Welcome = () => {
           <img
             src="/img-home.jpg"
             alt="Aventura en el Perú"
-            className="w-full h-auto shadow-2xl object-cover rounded-2xl"
+            className="w-full h-auto shadow-2xl object-cover rounded-md"
           />
         </div>
       </div>

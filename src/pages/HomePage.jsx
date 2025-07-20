@@ -5,7 +5,7 @@ import Categories from "../components/Categories";
 
 const HomePage = () => {
   return (
-    <div className="bg-[#CADBDB]">
+    <div className="">
       <Layout>
         <Welcome />
         <Categories />

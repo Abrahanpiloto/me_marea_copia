@@ -92,7 +92,7 @@ const Checkout = () => {
           </Link>
         </div>
       ) : (
-        <div className="flex flex-col lg:flex-row gap-10 border border-amber-500">
+        <div className="flex flex-col lg:flex-row gap-10">
           {/* --------------------- LADO IZQUIERDO --------------------- */}
           <div className="w-full lg:w-2/3 bg-[#dde2f5] p-6 rounded shadow-sm">
             {/* Tabs (solo visuales por ahora) */}

@@ -10,12 +10,14 @@ const Footer = () => {
           <p className="text-sm text-white">
             Hecho con ❤️ por{" "}
             <a
-              href="https://tuportafolio.com"
+              href="https://abrahanpiloto.netlify.app"
               target="_blank"
               rel="noopener noreferrer"
-              className="hover:text-blue-500"
+              className=""
             >
-              <span className="font-dancing text-xl">Abrahan Piloto</span>
+              <span className="font-dancing text-xl text-red-400 hover:text-blue-500">
+                Abrahan Piloto
+              </span>
             </a>
           </p>
         </div>

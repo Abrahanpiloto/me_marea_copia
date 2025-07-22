@@ -6,23 +6,27 @@ import AdminPage from "./pages/AdminPage";
 import ProductDetailsPage from "./pages/ProductDetailsPage";
 import Cart from "./pages/CartPage";
 import CheckoutPage from "./pages/CheckoutPage";
+import WhatsAppButton from "./components/WhatsAppButton";
 
 function App() {
   return (
-    <Router>
-      <Routes>
-        <Route path="/" element={<HomePage />} />
-        <Route path="/aboutpage" element={<AboutPage />} />
-        <Route path="/storepage" element={<StorePage />} />
-        <Route path="/adminpage" element={<AdminPage />} />
-        <Route
-          path="/productdetailspage/:id"
-          element={<ProductDetailsPage />}
-        />
-        <Route path="/cartpage" element={<Cart />} />
-        <Route path="/checkoutpage" element={<CheckoutPage />} />
-      </Routes>
-    </Router>
+    <>
+      <Router>
+        <Routes>
+          <Route path="/" element={<HomePage />} />
+          <Route path="/aboutpage" element={<AboutPage />} />
+          <Route path="/storepage" element={<StorePage />} />
+          <Route path="/adminpage" element={<AdminPage />} />
+          <Route
+            path="/productdetailspage/:id"
+            element={<ProductDetailsPage />}
+          />
+          <Route path="/cartpage" element={<Cart />} />
+          <Route path="/checkoutpage" element={<CheckoutPage />} />
+        </Routes>
+      </Router>
+      <WhatsAppButton />
+    </>
   );
 }
 

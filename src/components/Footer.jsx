@@ -3,24 +3,41 @@ import { FaInstagram, FaTiktok, FaFacebookF } from "react-icons/fa";
 
 const Footer = () => {
   return (
-    <footer className="bg-[#0b0d1d] h-auto py-4 w-full flex flex-col lg:flex-row lg:justify-between items-center px-6 text-white font-raleway text-sm">
-      {/* Texto centrado */}
-      <div className="w-full text-center order-2 md:order-1 mb-2 md:mb-0">
-        © 2025 <span className="font-dancing text-lg">Valenciana</span> todos
-        los derechos reservados.
-      </div>
+    <footer className="bg-[#0b0d1d] py-4 w-full text-white font-raleway text-sm">
+      <div className="flex flex-col lg:grid lg:grid-cols-3 items-center px-6 gap-4 lg:gap-0">
+        {/* Izquierda: Tu firma */}
+        <div className="order-3 lg:order-none lg:justify-self-start">
+          <p className="text-sm text-white">
+            Hecho con ❤️ por{" "}
+            <a
+              href="https://tuportafolio.com"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="hover:text-blue-500"
+            >
+              <span className="font-dancing text-xl">Abrahan Piloto</span>
+            </a>
+          </p>
+        </div>
 
-      {/* Íconos alineados a la derecha */}
-      <div className="order-1 md:order-2 flex gap-5 mb-2">
-        <a href="#" className="hover:text-blue-400 transition">
-          <FaInstagram size={18} />
-        </a>
-        <a href="#" className="hover:text-blue-400 transition">
-          <FaTiktok size={18} />
-        </a>
-        <a href="#" className="hover:text-blue-400 transition">
-          <FaFacebookF size={18} />
-        </a>
+        {/* Centro: Derechos reservados */}
+        <div className="order-2 lg:order-none text-center">
+          © 2025 <span className="font-dancing text-lg">Valenciana</span> todos
+          los derechos reservados.
+        </div>
+
+        {/* Derecha: Redes sociales */}
+        <div className="order-1 lg:order-none flex gap-5 lg:justify-end">
+          <a href="#" className="hover:text-blue-400 transition">
+            <FaInstagram size={18} />
+          </a>
+          <a href="#" className="hover:text-blue-400 transition">
+            <FaTiktok size={18} />
+          </a>
+          <a href="#" className="hover:text-blue-400 transition">
+            <FaFacebookF size={18} />
+          </a>
+        </div>
       </div>
     </footer>
   );

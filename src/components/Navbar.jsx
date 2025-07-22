@@ -128,7 +128,7 @@ const Navbar = () => {
       </nav>
 
       {/* ---- Icono de carrito 🛒 */}
-      {location.pathname !== "/cartpage" && (
+      {location.pathname !== "/cartpage" && cartCount > 0 && (
         <Link
           to="/cartpage"
           className="relative text-white hover:text-emerald-300 transition"

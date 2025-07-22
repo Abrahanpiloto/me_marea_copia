@@ -8,6 +8,15 @@ import fetchCartCount from "../utils/fetchCartCount";
 const Checkout = () => {
   const [items, setItems] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [formData, setFormData] = useState({
+    full_name: "",
+    user_email: "",
+    phone: "",
+    address: "",
+    province: "",
+    country: "",
+    district: "",
+  });
 
   const subtotal = items.reduce(
     (acc, item) => acc + item.price * item.quantity,
@@ -108,7 +117,7 @@ const Checkout = () => {
 
             <div className="flex gap-4">
               <div className="w-1/2">
-                <label className="block text-sm mb-1">Ciudad</label>
+                <label className="block text-sm mb-1">Distrito</label>
                 <input
                   type="text"
                   className="w-full border rounded px-3 py-2"
@@ -125,7 +134,30 @@ const Checkout = () => {
             <div>
               <label className="block text-sm mb-1">Provincia</label>
               <select className="w-full border rounded px-3 py-2">
-                <option>Lima</option>
+                <option value="Amazonas">Amazonas</option>
+                <option value="Áncash">Áncash</option>
+                <option value="Apurímac">Apurímac</option>
+                <option value="Arequipa">Arequipa</option>
+                <option value="Ayacucho">Ayacucho</option>
+                <option value="Cajamarca">Cajamarca</option>
+                <option value="Callao">Callao</option>
+                <option value="Cusco">Cusco</option>
+                <option value="Huancavelica">Huancavelica</option>
+                <option value="Huánuco">Huánuco</option>
+                <option value="Ica">Ica</option>
+                <option value="Junín">Junín</option>
+                <option value="La Libertad">La Libertad</option>
+                <option value="Lambayeque">Lambayeque</option>
+                <option value="Lima">Lima</option>
+                <option value="Loreto">Loreto</option>
+                <option value="Madre de Dios">Madre de Dios</option>
+                <option value="Moquegua">Moquegua</option>
+                <option value="Pasco">Pasco</option>
+                <option value="Piura">Piura</option>
+                <option value="Puno">Puno</option>
+                <option value="San Martín">San Martín</option>
+                <option value="Tumbes">Tumbes</option>
+                <option value="Ucayali">Ucayali</option>
               </select>
             </div>
 

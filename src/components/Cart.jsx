@@ -4,11 +4,13 @@ import { getGuestId } from "../utils/guestId";
 import { Link } from "react-router-dom";
 import fetchCartCount from "../utils/fetchCartCount";
 import { FaRegTrashCan } from "react-icons/fa6";
+import PaymentOptionsModal from "./PaymentOptionsModal";
 
 const Cart = () => {
   const [items, setItems] = useState([]);
   const [showCouponInput, setShowCouponInput] = useState(false);
   const [couponCode, setCouponCode] = useState("");
+  const [showPaymentModal, setShowPaymentModal] = useState(false);
 
   const subtotal = items.reduce(
     (acc, item) => acc + item.price * item.quantity,
@@ -204,15 +206,12 @@ const Cart = () => {
               </button>
             </div>
           )}
-          <Link
-            to={{
-              pathname: "/checkoutpage",
-              state: { items, subtotal },
-            }}
+          <button
+            onClick={() => setShowPaymentModal(true)}
             className="cursor-pointer lg:w-3/4 w-full bg-[#E2A555] text-black py-3 rounded hover:bg-emerald-300 transition mb-3 flex justify-center "
           >
             Continuar con el pago →
-          </Link>
+          </button>
 
           <Link
             to="/storepage"
@@ -222,6 +221,16 @@ const Cart = () => {
           </Link>
         </div>
       </div>
+      {showPaymentModal && (
+        <PaymentOptionsModal
+          onSelectOption={(option) => {
+            setShowPaymentModal(false);
+            console.log("Usuario eligió:", option);
+            // Aquí puedes redirigir usando `navigate` o guardar en estado global
+          }}
+          onClose={() => setShowPaymentModal(false)}
+        />
+      )}
     </div>
   );
 };

@@ -7,6 +7,7 @@ import ProductDetailsPage from "./pages/ProductDetailsPage";
 import Cart from "./pages/CartPage";
 import CheckoutPage from "./pages/CheckoutPage";
 import WhatsAppButton from "./components/WhatsAppButton";
+import PayPalPage from "./pages/PayPalPage";
 
 function App() {
   return (
@@ -23,6 +24,7 @@ function App() {
           />
           <Route path="/cartpage" element={<Cart />} />
           <Route path="/checkoutpage" element={<CheckoutPage />} />
+          <Route path="/paypalpage" element={<PayPalPage />} />
         </Routes>
       </Router>
       <WhatsAppButton />

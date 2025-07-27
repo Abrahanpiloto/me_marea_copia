@@ -8,6 +8,7 @@ import fetchCartCount from "../utils/fetchCartCount";
 const Checkout = () => {
   const [items, setItems] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [formCompleted, setFormCompleted] = useState(false);
   const [formData, setFormData] = useState({
     full_name: "",
     user_email: "",
@@ -76,6 +77,33 @@ const Checkout = () => {
     }
   };
 
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    const {
+      full_name,
+      user_email,
+      phone,
+      address,
+      province,
+      country,
+      district,
+    } = formData;
+
+    // Si es retiro, no se necesita dirección
+    const valid =
+      full_name &&
+      user_email &&
+      phone &&
+      (isRetiro || (address && province && country && district));
+
+    if (valid) {
+      setFormCompleted(true);
+      navigate("/paypalpage");
+    } else {
+      alert("Por favor completa todos los campos obligatorios.");
+    }
+  };
+
   return (
     <div className="max-w-6xl mx-auto px-4 py-4 mt-20">
       {items.length === 0 ? (
@@ -105,13 +133,18 @@ const Checkout = () => {
               </button>
             </div>
 
-            <form className="space-y-5">
+            <form className="space-y-5" onSubmit={handleSubmit}>
               <div>
                 <label className="block text-sm mb-1 font-semibold">
                   Nombre completo
                 </label>
                 <input
                   type="text"
+                  name="full_name"
+                  value={formData.full_name}
+                  onChange={(e) =>
+                    setFormData({ ...formData, full_name: e.target.value })
+                  }
                   className="w-full border border-gray-400 rounded px-3 py-2 bg-gray-50"
                 />
               </div>
@@ -125,6 +158,11 @@ const Checkout = () => {
                 </label>
                 <input
                   type="email"
+                  name="user_email"
+                  value={formData.user_email}
+                  onChange={(e) =>
+                    setFormData({ ...formData, user_email: e.target.value })
+                  }
                   className="w-full border border-gray-400 rounded px-3 py-2 bg-gray-50"
                 />
               </div>
@@ -138,6 +176,11 @@ const Checkout = () => {
                 </label>
                 <input
                   type="text"
+                  name="phone"
+                  value={formData.phone}
+                  onChange={(e) =>
+                    setFormData({ ...formData, phone: e.target.value })
+                  }
                   className="w-full border border-gray-400 rounded px-3 py-2 bg-gray-50"
                   placeholder=""
                 />

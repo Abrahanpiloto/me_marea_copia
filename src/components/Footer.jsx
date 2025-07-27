@@ -7,10 +7,10 @@ const Footer = () => {
       <div className="flex flex-col lg:grid lg:grid-cols-3 items-center px-6 gap-4 lg:gap-0">
         {/* Izquierda: Tu firma */}
         <div className="order-3 lg:order-none lg:justify-self-start">
-          <p className="text-sm text-white">
-            Hecho con ❤️ por{" "}
+          <p className="text-sm text-white ">
+            Desarrollado por{" "}
             <a
-              href="https://abrahanpiloto.netlify.app"
+              href="https://abrahan.netlify.app"
               target="_blank"
               rel="noopener noreferrer"
               className=""
@@ -23,8 +23,8 @@ const Footer = () => {
         </div>
 
         {/* Centro: Derechos reservados */}
-        <div className="order-2 lg:order-none text-center">
-          © 2025 <span className="font-dancing text-lg">Valenciana</span> todos
+        <div className="order-2 lg:order-none text-center text-sm">
+          © 2025 <span className="font-dancing text-xl">Valenciana</span> todos
           los derechos reservados.
         </div>
 
